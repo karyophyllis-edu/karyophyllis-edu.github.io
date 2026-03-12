@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δημοσθένης Καρυοφύλλης — Βιολόγος & Εκπαιδευτικός</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500&family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #111720;
+    --border: #1e2736;
+    --accent: #4e9d7e;
+    --accent2: #c8a96e;
+    --text: #e8edf5;
+    --muted: #6b7d96;
+    --light: #a8b8cc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 48px;
+    background: rgba(10,14,20,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'ΒΙΟΛΟΓΙΑ';
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Playfair Display', serif;
+    font-size: 12rem;
+    font-weight: 700;
+    color: var(--border);
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .hero-inner {
+    max-width: 720px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.9s ease forwards 0.2s;
+  }
+
+  .hero-tag {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--light);
+    max-width: 520px;
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .tag {
+    font-size: 0.78rem;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    font-family: 'Source Code Pro', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    background: var(--accent);
+    color: #0a0e14;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover {
+    background: #5db891;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border: 1px solid var(--border);
+    color: var(--light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--muted);
+    color: var(--text);
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 48px;
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+    padding: 0 48px;
+    border-right: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .stat:last-child { border-right: none; }
+  .stat:nth-child(1) { animation-delay: 0.1s; }
+  .stat:nth-child(2) { animation-delay: 0.2s; }
+  .stat:nth-child(3) { animation-delay: 0.3s; }
+  .stat:nth-child(4) { animation-delay: 0.4s; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent2);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'Source Code Pro', monospace;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 96px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 48px;
+    color: var(--text);
+  }
+
+  /* ── MATERIAL GRID ── */
+  .material-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .material-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .material-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+
+  .material-card:hover {
+    border-color: #2a3a4e;
+    transform: translateY(-3px);
+  }
+
+  .material-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card-icon {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .card-meta {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── PUBLICATIONS ── */
+  .pub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pub-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    transition: border-left-color 0.2s;
+  }
+
+  .pub-item:hover {
+    border-left-color: var(--accent);
+  }
+
+  .pub-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .pub-meta {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .pub-publisher {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.72rem;
+    padding: 2px 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--accent2);
+    font-family: 'Source Code Pro', monospace;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .contact-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s;
+  }
+
+  .contact-item:hover {
+    border-color: var(--accent);
+  }
+
+  .contact-icon {
+    width: 42px;
+    height: 42px;
+    background: rgba(78,157,126,0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'Source Code Pro', monospace;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+
+  .contact-value {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 48px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  footer p {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 20px; }
+    .hero { padding: 100px 24px 60px; }
+    .hero::after { display: none; }
+    section { padding: 64px 24px; }
+    .stats-bar { padding: 24px; }
+    .stat { padding: 12px 24px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .divider { margin: 0 24px; }
+    footer { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">karyophyllis-edu</span>
+  <ul class="nav-links">
+    <li><a href="#material">Υλικό</a></li>
+    <li><a href="#publications">Έρευνα</a></li>
+    <li><a href="#contact">Επικοινωνία</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">PhD Βιολόγος · Εκπαιδευτικός · Ερευνητής</div>
+    <h1>Δημοσθένης<br><em>Καρυοφύλλης</em></h1>
+    <p class="hero-desc">
+      <strong style="color:var(--accent2); font-weight:500;">PhD Βιολόγος</strong> και καθηγητής Βιολογίας Λυκείου με πάνω από 25 χρόνια εμπειρίας. 
+      Ερευνητής, συγγραφέας εκπαιδευτικών βιβλίων και σύμβουλος EdTech & AI στην εκπαίδευση.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">Βιολογία ΟΠ</span>
+      <span class="tag">Εκπαιδευτική Ηγεσία</span>
+      <span class="tag">AI in Education</span>
+      <span class="tag">ΣΕΠ</span>
+      <span class="tag">Cell Biology</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="#material" class="btn-primary">Εκπαιδευτικό Υλικό →</a>
+      <a href="#publications" class="btn-secondary">Δημοσιεύσεις</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num">25+</span>
+    <span class="stat-label">Χρόνια εμπειρίας</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">11</span>
+    <span class="stat-label">Χρόνια ως Διευθυντής</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">3</span>
+    <span class="stat-label">Εκδοτικοί οίκοι</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">Ελλάδα</span>
+    <span class="stat-label">Βάση</span>
+  </div>
+</div>
+
+<!-- MATERIAL -->
+<section id="material">
+  <div class="section-label">Εκπαιδευτικό Υλικό</div>
+  <h2>Ψηφιακοί Πόροι & Interactives</h2>
+  <div class="material-grid">
+
+    <a href="https://karyophyllis-edu.github.io/biology-op/" class="material-card">
+      <span class="card-icon">🧬</span>
+      <div class="card-title">Βιολογία Προσανατολισμού</div>
+      <p class="card-desc">Διαδραστικό υλικό, quiz, infographics και οδηγοί μελέτης για τη Βιολογία Γ' Λυκείου ΟΠ.</p>
+      <span class="card-meta">ΒΙΟΛΟΓΙΑ ΟΠ · ΠΑΝΕΛΛΑΔΙΚΕΣ</span>
+    </a>
+
+    <a href="#" class="material-card" style="opacity:0.5; cursor:default;">
+      <span class="card-icon">🔬</span>
+      <div class="card-title">Βιολογία ΒΓΠ</div>
+      <p class="card-desc">Υλικό για Βιολογία Β' & Γ' Λυκείου Γενικής Παιδείας. Σύντομα διαθέσιμο.</p>
+      <span class="card-meta">ΣΕ ΕΞΕΛΙΞΗ</span>
+    </a>
+
+    <a href="#" class="material-card" style="opacity:0.5; cursor:default;">
+      <span class="card-icon">🫀</span>
+      <div class="card-title">Ανατομία-Φυσιολογία ΙΙ</div>
+      <p class="card-desc">Εκπαιδευτικό υλικό για το μάθημα Ανατομίας-Φυσιολογίας ΙΙ Γ' ΕΠΑΛ. Σύντομα διαθέσιμο.</p>
+      <span class="card-meta">ΕΠΑΛ · ΣΕ ΕΞΕΛΙΞΗ</span>
+    </a>
+
+    <a href="#" class="material-card" style="opacity:0.5; cursor:default;">
+      <span class="card-icon">🏥</span>
+      <div class="card-title">Υγιεινή Γ' ΕΠΑΛ</div>
+      <p class="card-desc">Εκπαιδευτικό υλικό για το μάθημα Υγιεινής Γ' ΕΠΑΛ. Σύντομα διαθέσιμο.</p>
+      <span class="card-meta">ΕΠΑΛ · ΣΕ ΕΞΕΛΙΞΗ</span>
+    </a>
+
+    <a href="#" class="material-card" style="opacity:0.5; cursor:default;">
+      <span class="card-icon">🧭</span>
+      <div class="card-title">ΣΕΠ & Συμβουλευτική</div>
+      <p class="card-desc">Υλικό Σχολικού Επαγγελματικού Προσανατολισμού. Σύντομα διαθέσιμο.</p>
+      <span class="card-meta">ΣΕ ΕΞΕΛΙΞΗ</span>
+    </a>
+
+    <a href="https://karyophyllis-edu.github.io/health/" class="material-card" style="border-color: #1a2530;">
+      <span class="card-icon">❤️</span>
+      <div class="card-title">Σεξουαλική Υγεία</div>
+      <p class="card-desc">Ενημερωμένα δεδομένα για αντισύλληψη, ΣΜΝ και σεξουαλική υγεία. Infographics & διαδραστικές σελίδες.</p>
+      <span class="card-meta">ΑΓΩΓΗ ΥΓΕΙΑΣ · Α' ΛΥΚΕΙΟΥ</span>
+    </a>
+
+  </div>
+
+  <!-- ΕΞΩΤΕΡΙΚΟΙ ΣΥΝΔΕΣΜΟΙ -->
+  <div style="margin-top: 48px;">
+    <div class="section-label" style="margin-bottom: 16px;">Χρήσιμοι Σύνδεσμοι</div>
+    <p style="font-size:0.85rem; color:var(--muted); margin-bottom: 20px;">Αξιόπιστες πηγές και εκπαιδευτικοί πόροι που αξίζουν την προσοχή σας.</p>
+    <div style="display:flex; flex-wrap:wrap; gap:12px;" id="external-links">
+      <!-- Προσθέτεις εδώ links όποτε θέλεις, π.χ.: -->
+      <a href="https://www.sch.gr" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--light); text-decoration:none; font-size:0.82rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        🔗 Πανελλήνιο Σχολικό Δίκτυο
+      </a>
+      <a href="https://www.iep.edu.gr" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--light); text-decoration:none; font-size:0.82rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        🔗 ΙΕΠ
+      </a>
+      <a href="https://www.eody.gov.gr" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--light); text-decoration:none; font-size:0.82rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+        🔗 ΕΟΔΥ
+      </a>
+    </div>
+    <p style="margin-top:14px; font-size:0.75rem; color:var(--muted); font-family:'Source Code Pro', monospace;">
+      + Μπορείς να προσθέσεις οποιοδήποτε link θέλεις εδώ ανά πάσα στιγμή.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-label">Έρευνα & Δημοσιεύσεις</div>
+  <h2>Ακαδημαϊκό Έργο</h2>
+  <div class="pub-list">
+
+    <div class="pub-item">
+      <div class="pub-title">Δημοσιεύσεις στην εκπαιδευτική ηγεσία και την ψηφιακή εκπαίδευση</div>
+      <div class="pub-meta">Εκπαιδευτική Ηγεσία · AI in Education · Biology Education</div>
+      <span class="pub-publisher">Springer</span>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-title">Έρευνα στη βιολογική εκπαίδευση και τη διδακτική μεθοδολογία</div>
+      <div class="pub-meta">Biology Education · Didactics · Curriculum</div>
+      <span class="pub-publisher">Oxford Press</span>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-title">Εκπαιδευτικά βιβλία Βιολογίας Λυκείου</div>
+      <div class="pub-meta">Βιολογία Λυκείου · Εκπαιδευτικό Υλικό</div>
+      <span class="pub-publisher">Σαββάλας</span>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Επικοινωνία</div>
+  <h2>Ας Μιλήσουμε</h2>
+  <div class="contact-grid">
+
+    <a href="/cdn-cgi/l/email-protection#9df4f3fbf2ddf6fcefe4f2edf5e4f1f1f4eeb3fef2f0" class="contact-item">
+      <div class="contact-icon">✉️</div>
+      <div>
+        <div class="contact-label">EMAIL</div>
+        <div class="contact-value"><span class="__cf_email__" data-cfemail="fe97909891be959f8c87918e96879292978dd09d9193">[email&#160;protected]</span></div>
+      </div>
+    </a>
+
+    <a href="https://github.com/karyophyllis-edu" class="contact-item" target="_blank">
+      <div class="contact-icon">💻</div>
+      <div>
+        <div class="contact-label">GITHUB</div>
+        <div class="contact-value">karyophyllis-edu</div>
+      </div>
+    </a>
+
+    <a href="#" class="contact-item">
+      <div class="contact-icon">🌍</div>
+      <div>
+        <div class="contact-label">ΤΟΠΟΘΕΣΙΑ</div>
+        <div class="contact-value">Ελλάδα</div>
+      </div>
+    </a>
+
+    <a href="#" class="contact-item">
+      <div class="contact-icon">📚</div>
+      <div>
+        <div class="contact-label">ΜΑΘΗΜΑΤΑ 1-1</div>
+        <div class="contact-value">Δια ζώσης & Διαδικτυακά</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<hr class="divider">
+<footer>
+  <p>© 2025 Δημοσθένης Καρυοφ  <p>PhD Βιολόγος · Συγγραφέας Εκπαιδευτικών Βιβλίων · EdTech & AI Consultant</p>
+</footer>
+
+</body>
+</html>
