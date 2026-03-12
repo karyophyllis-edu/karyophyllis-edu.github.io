@@ -28,7 +28,7 @@
     font-family: 'Source Sans 3', sans-serif;
     font-weight: 300;
     line-height: 1.7;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   /* ── NOISE TEXTURE OVERLAY ── */
@@ -89,23 +89,29 @@
     align-items: center;
     padding: 120px 48px 80px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .hero::after {
-    content: 'ΒΙΟΛΟΓΙΑ';
+    display: none;
+  }
+
+  .hero-bg-text {
     position: absolute;
-    right: -40px;
+    right: -120px;
     top: 50%;
     transform: translateY(-50%) rotate(90deg);
+    transform-origin: center center;
     font-family: 'Playfair Display', serif;
-    font-size: 12rem;
+    font-size: 6rem;
     font-weight: 700;
     color: var(--border);
-    letter-spacing: -0.05em;
+    letter-spacing: 0.1em;
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
+    opacity: 0.35;
+    z-index: 0;
   }
 
   .hero-inner {
@@ -520,6 +526,7 @@
 
 <!-- HERO -->
 <div class="hero">
+  <div class="hero-bg-text">ΒΙΟΛΟΓΙΑ</div>
   <div class="hero-inner">
     <div class="hero-tag">PhD Βιολόγος · Εκπαιδευτικός · Ερευνητής</div>
     <h1>Δημοσθένης<br><em>Καρυοφύλλης</em></h1>
@@ -670,11 +677,11 @@
   <h2>Ας Μιλήσουμε</h2>
   <div class="contact-grid">
 
-    <a href="/cdn-cgi/l/email-protection#9df4f3fbf2ddf6fcefe4f2edf5e4f1f1f4eeb3fef2f0" class="contact-item">
+    <a href="#" onclick="window.location='mailto:'+'info'+'@'+'karyophyllis.com'" class="contact-item">
       <div class="contact-icon">✉️</div>
       <div>
         <div class="contact-label">EMAIL</div>
-        <div class="contact-value"><span class="__cf_email__" data-cfemail="fe97909891be959f8c87918e96879292978dd09d9193">[email&#160;protected]</span></div>
+        <div class="contact-value">info [at] karyophyllis.com</div>
       </div>
     </a>
 
@@ -708,7 +715,8 @@
 <!-- FOOTER -->
 <hr class="divider">
 <footer>
-  <p>© 2025 Δημοσθένης Καρυοφ  <p>PhD Βιολόγος · Συγγραφέας Εκπαιδευτικών Βιβλίων · EdTech & AI Consultant</p>
+  <p>© 2026 Δημοσθένης Καρυοφύλλης · karyophyllis-edu.github.io</p>
+  <p>PhD Βιολόγος · Συγγραφέας Εκπαιδευτικών Βιβλίων · EdTech & AI Consultant</p>
 </footer>
 
 </body>
