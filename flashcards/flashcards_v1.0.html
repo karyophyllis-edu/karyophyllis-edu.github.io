@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIO Flashcards — Βιολογία Λυκείου</title>
+<meta name="description" content="Flashcards Βιολογίας Λυκείου με επανάληψη Leitner.">
+<meta name="author" content="Δρ. Δημοσθένης Καρυοφύλλης — karyophyllis.com">
+
+<!-- Εφαρμογή αρχικής οθόνης (iOS / Android) -->
+<meta name="theme-color" content="#0a0f1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BIO Cards">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;900&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Backgrounds */
+  --bg:     #0a0f1a;
+  --surf:   #111827;
+  --surf2:  #1a2235;
+  --border: rgba(30,45,69,0.8);
+
+  /* Text */
+  --text:   #f1f5f9;
+  --text2:  #94a3b8;
+  --text3:  #64748b;
+
+  /* Accent colors */
+  --cyan:   #06b6d4;
+  --cyan2:  #22d3ee;
+  --blue:   #3b82f6;
+  --blue2:  #60a5fa;
+  --green:  #10b981;
+  --green2: #34d399;
+  --amber:  #f59e0b;
+  --amber2: #fbbf24;
+  --rose:   #f43f5e;
+  --rose2:  #fb7185;
+  --violet: #8b5cf6;
+  --violet2:#a78bfa;
+
+  /* Layout */
+  --r: 12px;
+  --max-w: 860px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-appearance: none; appearance: none; touch-action: manipulation; }
+[hidden] { display: none !important; }
+
+/* ---------- Κεφαλίδα ---------- */
+.top {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left));
+  background: rgba(10,15,26,0.92);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+body.in-study .top { display: none; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.logo {
+  width: 34px; height: 34px; border-radius: 9px; flex: none;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  display: grid; place-items: center; font-weight: 900; font-size: 15px; color: var(--bg);
+}
+.t1 { font-weight: 700; font-size: 16px; line-height: 1.2; }
+.t2 { font-size: 12px; color: var(--text2); }
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 44px; height: 44px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surf);
+  display: grid; place-items: center; color: var(--text2);
+}
+.icon-btn svg { width: 22px; height: 22px; }
+.icon-btn:active { background: var(--surf2); }
+
+/* ---------- Γενικά ---------- */
+main {
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 16px max(16px, env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.card {
+  background: var(--surf); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 16px; margin-bottom: 14px;
+}
+.card h2 {
+  margin: 0 0 12px; font-size: 13px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text2);
+}
+.muted { color: var(--text2); }
+.small { font-size: 13px; }
+.center { text-align: center; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 18px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surf2);
+  font-weight: 600; font-size: 15px;
+}
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .4; cursor: default; transform: none; }
+.btn.primary { background: linear-gradient(135deg, var(--cyan), var(--blue)); border-color: transparent; color: #04111d; }
+.btn.ghost { background: transparent; }
+.btn.danger { border-color: rgba(244,63,94,.5); color: var(--rose2); background: rgba(244,63,94,.08); }
+.btn.block { width: 100%; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-row .btn { flex: 1 1 140px; }
+.link-btn { background: none; border: 0; color: var(--cyan2); padding: 6px 0; font-size: 14px; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--border); background: var(--surf2); color: var(--text2);
+  white-space: nowrap;
+}
+.badge.cyan   { color: var(--cyan2);   border-color: rgba(6,182,212,.4);  background: rgba(6,182,212,.1); }
+.badge.blue   { color: var(--blue2);   border-color: rgba(59,130,246,.4); background: rgba(59,130,246,.1); }
+.badge.amber  { color: var(--amber2);  border-color: rgba(245,158,11,.4); background: rgba(245,158,11,.1); }
+.badge.rose   { color: var(--rose2);   border-color: rgba(244,63,94,.4);  background: rgba(244,63,94,.1); }
+.badge.green  { color: var(--green2);  border-color: rgba(16,185,129,.4); background: rgba(16,185,129,.1); }
+.badge.violet { color: var(--violet2); border-color: rgba(139,92,246,.4); background: rgba(139,92,246,.1); }
+
+/* ---------- Ειδοποιήσεις ---------- */
+.notice {
+  border-radius: var(--r); padding: 14px 16px; margin-bottom: 14px;
+  border: 1px solid var(--border); background: var(--surf);
+  font-size: 14px;
+}
+.notice.info  { border-color: rgba(59,130,246,.45);  background: rgba(59,130,246,.08); }
+.notice.warn  { border-color: rgba(245,158,11,.45);  background: rgba(245,158,11,.08); }
+.notice.error { border-color: rgba(244,63,94,.45);   background: rgba(244,63,94,.08); }
+.notice strong { color: var(--text); }
+.notice ol { margin: 8px 0 8px; padding-left: 22px; }
+.notice ol li { margin: 4px 0; }
+.notice .btn-row { margin-top: 10px; }
+.notice .btn { min-height: 42px; font-size: 14px; }
+.share-ico { display: inline-block; width: 18px; height: 18px; vertical-align: -3px; color: var(--blue2); }
+details.warnings summary { cursor: pointer; font-weight: 600; }
+details.warnings ul { margin: 8px 0 0; padding-left: 18px; font-size: 13px; color: var(--text2); }
+
+/* ---------- Αρχική ---------- */
+.today { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat {
+  background: var(--surf2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px; text-align: center;
+}
+.stat .n { font-size: 32px; font-weight: 900; line-height: 1.1; }
+.stat .l { font-size: 13px; color: var(--text2); }
+.stat.due .n { color: var(--cyan2); }
+.stat.new .n { color: var(--violet2); }
+.done-msg { text-align: center; padding: 6px 0 12px; color: var(--green2); font-weight: 600; }
+
+.lbar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--surf2); margin-bottom: 12px; }
+.lbar i { display: block; height: 100%; }
+.lgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.lcell { text-align: center; background: var(--surf2); border-radius: 8px; padding: 8px 2px; border-top: 3px solid var(--text3); }
+.lcell .n { font-weight: 700; font-size: 17px; }
+.lcell .l { font-size: 11px; color: var(--text2); }
+.c0 { background: var(--text3); }  .lcell.c0b { border-top-color: var(--text3); }
+.c1 { background: var(--rose); }   .lcell.c1b { border-top-color: var(--rose); }
+.c2 { background: var(--amber); }  .lcell.c2b { border-top-color: var(--amber); }
+.c3 { background: var(--blue); }   .lcell.c3b { border-top-color: var(--blue); }
+.c4 { background: var(--cyan); }   .lcell.c4b { border-top-color: var(--cyan); }
+.c5 { background: var(--green); }  .lcell.c5b { border-top-color: var(--green); }
+
+.fgroup { margin-bottom: 14px; }
+.fgroup:last-child { margin-bottom: 0; }
+.fgroup .ft { font-size: 13px; color: var(--text2); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  min-height: 40px; padding: 0 14px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surf2); color: var(--text);
+  font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;
+}
+.chip .cnt { font-size: 12px; font-weight: 600; color: var(--text2); background: rgba(255,255,255,.06); border-radius: 999px; padding: 1px 7px; }
+.chip[aria-pressed="true"] { border-color: var(--cyan); background: rgba(6,182,212,.15); color: var(--cyan2); }
+.chip[aria-pressed="true"] .cnt { color: var(--cyan2); background: rgba(6,182,212,.18); }
+.chip:disabled { opacity: .35; cursor: default; }
+.foot { text-align: center; font-size: 12px; color: var(--text3); margin-top: 18px; line-height: 1.7; }
+.foot .author { color: var(--text2); }
+.foot a { color: var(--text2); text-decoration: none; border-bottom: 1px dotted var(--text3); }
+
+/* ---------- Μελέτη ---------- */
+.study-top {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  padding: max(10px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left));
+  background: rgba(10,15,26,0.94);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.prog { flex: 1; min-width: 0; }
+.prog-text { font-size: 13px; color: var(--text2); margin-bottom: 5px; display: flex; justify-content: space-between; }
+.pbar { height: 6px; border-radius: 3px; background: var(--surf2); overflow: hidden; }
+.pbar i { display: block; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--blue)); transition: width .25s; }
+
+.study-body {
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 14px max(16px, env(safe-area-inset-right)) calc(150px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.meta-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.section-name { font-size: 13px; color: var(--text3); margin-bottom: 12px; }
+
+.fc {
+  background: var(--surf); border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden;
+}
+.fc-q { padding: 18px 16px; }
+.fc-q .qhead { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+.fc-q .qlabel { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text3); }
+.qtext { font-size: 19px; font-weight: 600; line-height: 1.45; }
+.qtext .line.item { font-size: 17px; font-weight: 400; }
+.fc-img { display: block; max-width: 100%; height: auto; margin: 14px auto 0; border-radius: 8px; background: #fff; }
+
+.fc-a { border-top: 1px dashed var(--border); padding: 16px; background: rgba(26,34,53,.55); animation: reveal .22s ease-out; }
+@keyframes reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.fc-a .ahead { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+.atext { font-family: 'Literata', serif; font-size: 17px; line-height: 1.65; }
+.atext strong, .qtext strong { color: var(--cyan2); font-weight: 600; }
+.qtext strong { color: var(--text); }
+.atext em { color: var(--text2); }
+
+.line { margin: 0 0 10px; }
+.line:last-child { margin-bottom: 0; }
+.line.item { position: relative; padding-left: 18px; }
+.line.item::before { content: ''; position: absolute; left: 3px; top: .72em; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); }
+.b-line {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surf);
+  border-left: 3px solid var(--amber);
+}
+.b-line .line-main { flex: 1; min-width: 0; }
+.line-note { font-size: 14px; color: var(--text2); font-style: italic; margin-top: 4px; }
+.pts {
+  flex: none; font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--amber2); background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.4);
+  border-radius: 999px; padding: 2px 9px; margin-top: 2px; white-space: nowrap;
+}
+
+.draft-meta {
+  margin-top: 12px; padding: 12px; border-radius: 10px;
+  border: 1px dashed rgba(244,63,94,.5); background: rgba(244,63,94,.06);
+  font-size: 13px; color: var(--text2);
+}
+.draft-meta code { font-family: ui-monospace, Menlo, monospace; color: var(--rose2); font-size: 13px; }
+.draft-meta .w { color: var(--amber2); margin-top: 6px; }
+
+.actionbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  padding: 12px max(16px, env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  background: rgba(10,15,26,0.96);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+}
+.actionbar .inner { max-width: var(--max-w); margin: 0 auto; display: flex; gap: 10px; }
+.rate {
+  flex: 1; min-height: 58px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surf2); font-weight: 700; font-size: 15px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+}
+.rate small { font-weight: 400; font-size: 11px; color: var(--text2); }
+.rate.bad     { border-color: rgba(244,63,94,.55);  color: var(--rose2);  background: rgba(244,63,94,.1); }
+.rate.partial { border-color: rgba(245,158,11,.55); color: var(--amber2); background: rgba(245,158,11,.1); }
+.rate.good    { border-color: rgba(16,185,129,.55); color: var(--green2); background: rgba(16,185,129,.1); }
+.rate:active { transform: scale(.98); }
+.kbd-hint { text-align: center; font-size: 11px; color: var(--text3); margin-top: 6px; }
+@media (hover: none) { .kbd-hint { display: none; } }
+
+/* ---------- Σύνοψη ---------- */
+.sum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.sum-grid .stat .n { font-size: 28px; }
+.sum-grid .good .n { color: var(--green2); }
+.sum-grid .partial .n { color: var(--amber2); }
+.sum-grid .bad .n { color: var(--rose2); }
+
+/* ---------- Ρυθμίσεις ---------- */
+.field-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.field label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 4px; text-align: center; }
+.field input {
+  width: 100%; min-height: 46px; text-align: center; font-size: 16px; font-weight: 600;
+  border-radius: 10px; border: 1px solid var(--border); background: var(--surf2);
+}
+.field input:focus, textarea:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+.field.wide { max-width: 160px; }
+textarea {
+  width: 100%; min-height: 110px; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surf2);
+  font-family: ui-monospace, Menlo, monospace; font-size: 16px; line-height: 1.35;
+  word-break: break-all; resize: vertical;
+}
+.msg { font-size: 14px; margin-top: 10px; }
+.msg.ok { color: var(--green2); }
+.msg.err { color: var(--rose2); }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; }
+.kv dt { color: var(--text2); }
+.kv dd { margin: 0; }
+
+/* ---------- Φόρτωση ---------- */
+.loading { display: grid; place-items: center; min-height: 50vh; color: var(--text2); gap: 14px; text-align: center; }
+.spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--surf2); border-top-color: var(--cyan); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (min-width: 640px) {
+  .qtext { font-size: 21px; }
+  .fc-q, .fc-a { padding: 22px 24px; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">Bio</div>
+    <div>
+      <div class="t1">BIO Flashcards</div>
+      <div class="t2">Βιολογία Λυκείου</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span id="draftBadge" class="badge rose" hidden>ΠΡΟΧΕΙΡΑ</span>
+    <button class="icon-btn" data-action="settings" aria-label="Ρυθμίσεις">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div id="view"></div>
+
+<script>
+'use strict';
+/* =============================================================
+   BIO Flashcards v1.0 — Φάση 2 (ανώνυμη / δημόσια έκδοση)
+   ============================================================= */
+
+/* ---------- Ρυθμίσεις εγκατάστασης ---------- */
+const APP_VERSION = '1.0';
+const MODE = 'public';                 // Φάση 4: 'student'
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwQk7NpU0FuMqOiEX7tQ19HHT3NmE0Uv8q94b14uYV0Tf0M8OgA930kJC5n89tWO46I/exec';
+
+/* ---------- Σταθερές ---------- */
+const DEFAULT_SETTINGS = { intervals: [1, 2, 4, 8, 16], newPerDay: 20 };
+const MAX_REPEATS = 2;                 // πόσες φορές ξαναεμφανίζεται μια «λάθος» κάρτα στην ίδια συνεδρία
+const HIST_MAX = 20;                   // εγγραφές ιστορικού ανά κάρτα
+const FETCH_TIMEOUT_MS = 20000;
+const EXPORT_PREFIX = 'BIOFLASH1:';
+const DIMS = ['grade', 'chapter', 'type'];
+const DIM_LABEL = { grade: 'Τάξη', chapter: 'Κεφάλαιο', type: 'Τύπος' };
+const TYPES = ['ορισμός', 'Β_θέμα', 'εικόνα'];
+const TYPE_LABEL  = { 'ορισμός': 'Ορισμοί', 'Β_θέμα': 'Β θέματα', 'εικόνα': 'Εικόνες' };
+const TYPE_SINGLE = { 'ορισμός': 'Ορισμός', 'Β_θέμα': 'Β θέμα', 'εικόνα': 'Εικόνα' };
+const TYPE_COLOR  = { 'ορισμός': 'cyan', 'Β_θέμα': 'amber', 'εικόνα': 'violet' };
+
+const params = new URLSearchParams(location.search);
+const DRAFT = params.get('draft') === '1';
+const DRAFT_KEY = params.get('key') || '';
+const NS = 'bioflash_v1_' + (DRAFT ? 'draft_' : '');
+const K = {
+  progress: NS + 'progress',
+  settings: NS + 'settings',
+  daily:    NS + 'daily',
+  cards:    NS + 'cards',
+  ui:       NS + 'ui',
+  a2hs:     'bioflash_v1_a2hs_dismissed'
+};
+
+/* ---------- Αποθήκευση (κάθε πρόσβαση σε try/catch, εφεδρεία στη μνήμη) ---------- */
+const Store = (function () {
+  const mem = {};
+  let ok = false;
+  try {
+    const t = '__bioflash_test__';
+    window.localStorage.setItem(t, '1');
+    window.localStorage.removeItem(t);
+    ok = true;
+  } catch (e) { ok = false; }
+  return {
+    get ok() { return ok; },
+    get(k) {
+      if (ok) {
+        try {
+          const v = window.localStorage.getItem(k);
+          if (v != null) return JSON.parse(v);
+        } catch (e) { /* κατεστραμμένη τιμή ή απαγόρευση: συνεχίζουμε από τη μνήμη */ }
+      }
+      return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null;
+    },
+    set(k, v) {
+      mem[k] = v;
+      if (!ok) return false;
+      try { window.localStorage.setItem(k, JSON.stringify(v)); return true; }
+      catch (e) { return false; }
+    },
+    del(k) {
+      delete mem[k];
+      if (!ok) return;
+      try { window.localStorage.removeItem(k); } catch (e) { /* τίποτα */ }
+    }
+  };
+})();
+
+/* ---------- Ημερομηνίες (τοπική ημέρα συσκευής) ---------- */
+function pad(n) { return String(n).padStart(2, '0'); }
+function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function today() { return ymd(new Date()); }
+function addDays(s, n) { const a = s.split('-').map(Number); return ymd(new Date(a[0], a[1] - 1, a[2] + n)); }
+function isYmd(s) { return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+function fmtDate(s) {
+  if (!s) return '';
+  const t = today();
+  if (s <= t) return 'σήμερα';
+  if (s === addDays(t, 1)) return 'αύριο';
+  const a = s.split('-');
+  return a[2] + '/' + a[1];
+}
+function daysWord(n) { return n === 1 ? '1 ημέρα' : n + ' ημέρες'; }
+
+/* ---------- Κατάσταση ---------- */
+const S = {
+  cards: [], byId: {}, meta: null, warnings: [],
+  progress: {}, settings: clone(DEFAULT_SETTINGS), daily: { date: '', count: 0 },
+  ui: { filters: { grade: [], chapter: [], type: [] } },
+  view: 'loading', prevView: 'home',
+  session: null, summary: null,
+  offline: false, offlineMsg: '', loadError: '',
+  a2hsHidden: false, a2hsForce: false,
+  saveFailed: false,
+  flash: null,             // {target, text, kind}
+  exportCode: ''
+};
+
+function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+/* ---------- Επικύρωση δεδομένων προόδου ---------- */
+function cleanEntry(p) {
+  if (!p || typeof p !== 'object') return null;
+  const box = Number(p.box);
+  if (!Number.isInteger(box) || box < 0 || box > 5) return null;
+  const hist = Array.isArray(p.hist)
+    ? p.hist.filter(function (h) {
+        return h && isYmd(h.d) && ['g', 'p', 'b'].indexOf(h.g) >= 0 && Number.isInteger(h.b) && h.b >= 0 && h.b <= 5;
+      }).slice(-HIST_MAX).map(function (h) { return { d: h.d, g: h.g, b: h.b }; })
+    : [];
+  if (box === 0) return { box: 0, last: null, next: null, hist: hist };
+  if (!isYmd(p.next)) return null;
+  return { box: box, last: isYmd(p.last) ? p.last : null, next: p.next, hist: hist };
+}
+function cleanProgress(obj) {
+  const out = {};
+  let ok = 0, bad = 0;
+  if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+    Object.keys(obj).forEach(function (id) {
+      const c = (typeof id === 'string' && id.length > 0 && id.length <= 120) ? cleanEntry(obj[id]) : null;
+      if (c) { out[id] = c; ok++; } else bad++;
+    });
+  }
+  return { progress: out, ok: ok, bad: bad };
+}
+function cleanSettings(s) {
+  const out = clone(DEFAULT_SETTINGS);
+  if (s && typeof s === 'object') {
+    if (Array.isArray(s.intervals) && s.intervals.length === 5 &&
+        s.intervals.every(function (n) { return Number.isInteger(n) && n >= 1 && n <= 365; })) {
+      out.intervals = s.intervals.slice();
+    }
+    if (Number.isInteger(s.newPerDay) && s.newPerDay >= 0 && s.newPerDay <= 500) out.newPerDay = s.newPerDay;
+  }
+  return out;
+}
+function cleanDaily(d) {
+  return (d && isYmd(d.date) && Number.isInteger(d.count) && d.count >= 0) ? { date: d.date, count: d.count } : { date: '', count: 0 };
+}
+
+function loadLocal() {
+  S.progress = cleanProgress(Store.get(K.progress)).progress;
+  S.settings = cleanSettings(Store.get(K.settings));
+  S.daily = cleanDaily(Store.get(K.daily));
+  const ui = Store.get(K.ui);
+  if (ui && ui.filters) {
+    DIMS.forEach(function (d) {
+      if (Array.isArray(ui.filters[d])) S.ui.filters[d] = ui.filters[d].filter(function (v) { return typeof v === 'string'; });
+    });
+  }
+}
+function persist(key, value) {
+  const ok = Store.set(key, value);
+  if (!ok && Store.ok && !S.saveFailed) { S.saveFailed = true; }
+  return ok;
+}
+function saveProgress() { persist(K.progress, S.progress); }
+function saveUi() { persist(K.ui, S.ui); }
+
+/* ---------- Φόρτωση καρτών ---------- */
+async function fetchCards() {
+  if (!/^https:\/\//.test(GAS_URL)) throw new Error('Δεν έχει οριστεί το GAS_URL μέσα στο αρχείο HTML.');
+  const u = new URL(GAS_URL);
+  if (DRAFT) { u.searchParams.set('draft', '1'); u.searchParams.set('key', DRAFT_KEY); }
+  if (params.get('nocache') === '1') u.searchParams.set('nocache', '1');
+  const ctrl = ('AbortController' in window) ? new AbortController() : null;
+  const timer = ctrl ? setTimeout(function () { ctrl.abort(); }, FETCH_TIMEOUT_MS) : null;
+  try {
+    const r = await fetch(u.toString(), ctrl ? { signal: ctrl.signal } : {});
+    if (!r.ok) throw new Error('Ο διακομιστής απάντησε με σφάλμα (HTTP ' + r.status + ').');
+    let data;
+    try { data = await r.json(); }
+    catch (e) { throw new Error('Μη έγκυρη απάντηση. Ελέγξτε ότι το web app έχει πρόσβαση «Anyone».'); }
+    if (!data || data.ok !== true) throw new Error((data && data.error) || 'Μη έγκυρη απάντηση διακομιστή.');
+    if (!Array.isArray(data.cards)) throw new Error('Η απάντηση δεν περιέχει κάρτες.');
+    return data;
+  } catch (e) {
+    if (e && e.name === 'AbortError') throw new Error('Λήξη χρόνου σύνδεσης.');
+    throw e;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+function str(v) { return v == null ? '' : String(v); }
+function setCards(data) {
+  const cards = [];
+  const byId = {};
+  (data.cards || []).forEach(function (c) {
+    if (!c || !c.id || byId[c.id]) return;
+    const card = {
+      id: str(c.id), grade: str(c.grade), chapter: str(c.chapter), section: str(c.section),
+      type: str(c.type), q: str(c.q), a: str(c.a), img: str(c.img), page: str(c.page),
+      tags: Array.isArray(c.tags) ? c.tags.map(str) : [], source: str(c.source), status: str(c.status)
+    };
+    cards.push(card);
+    byId[card.id] = card;
+  });
+  S.cards = cards;
+  S.byId = byId;
+  S.meta = { generated: data.generated || '', draft: !!data.draft, version: data.version || '' };
+  S.warnings = Array.isArray(data.warnings) ? data.warnings.map(str) : [];
+  // Αφαίρεση επιλογών φίλτρων που δεν υπάρχουν πια
+  ['grade', 'chapter'].forEach(function (d) {
+    const vals = valuesOf(d);
+    S.ui.filters[d] = S.ui.filters[d].filter(function (v) { return vals.indexOf(v) >= 0; });
+  });
+  S.ui.filters.type = S.ui.filters.type.filter(function (v) { return TYPES.indexOf(v) >= 0; });
+}
+
+/* ---------- Φίλτρα ---------- */
+function natCmp(a, b) { return a.localeCompare(b, 'el', { numeric: true, sensitivity: 'base' }); }
+function valuesOf(d) {
+  if (d === 'type') return TYPES.slice();
+  const set = {};
+  S.cards.forEach(function (c) { if (c[d]) set[c[d]] = 1; });
+  return Object.keys(set).sort(natCmp);
+}
+function matches(c, except) {
+  for (let i = 0; i < DIMS.length; i++) {
+    const d = DIMS[i];
+    if (d === except) continue;
+    const sel = S.ui.filters[d];
+    if (sel.length && sel.indexOf(c[d]) < 0) return false;
+  }
+  return true;
+}
+function filtered() { return S.cards.filter(function (c) { return matches(c, null); }); }
+function facetCount(d, v) {
+  let n = 0;
+  S.cards.forEach(function (c) { if (c[d] === v && matches(c, d)) n++; });
+  return n;
+}
+function gradeLabel(g) { return g ? g + '΄ Λυκείου' : '—'; }
+
+/* ---------- Leitner ---------- */
+function boxOf(id) { const p = S.progress[id]; return p && p.box >= 1 ? p.box : 0; }
+function isDue(id, t) { const p = S.progress[id]; return !!(p && p.box >= 1 && (!p.next || p.next <= t)); }
+function newQuota() {
+  const used = S.daily.date === today() ? S.daily.count : 0;
+  return Math.max(0, S.settings.newPerDay - used);
+}
+function stats(list) {
+  const t = today();
+  const boxes = [0, 0, 0, 0, 0, 0];
+  let due = 0, nw = 0, nextDate = null, nextCount = 0;
+  list.forEach(function (c) {
+    const b = boxOf(c.id);
+    boxes[b]++;
+    if (b === 0) { nw++; return; }
+    const p = S.progress[c.id];
+    if (!p.next || p.next <= t) { due++; return; }
+    if (!nextDate || p.next < nextDate) { nextDate = p.next; nextCount = 1; }
+    else if (p.next === nextDate) nextCount++;
+  });
+  return { due: due, nw: nw, boxes: boxes, nextDate: nextDate, nextCount: nextCount, total: list.length };
+}
+
+/** Τι θα συμβεί αν η κάρτα πάρει αυτή την αξιολόγηση: {box, days}. */
+function outcome(id, g) {
+  const oldBox = boxOf(id);
+  let box, days;
+  if (g === 'good') { box = Math.min(5, oldBox + 1); days = S.settings.intervals[box - 1]; }
+  else if (g === 'partial') {
+    if (oldBox === 0) { box = 1; days = 1; }                 // νέα κάρτα + «Μερικώς» → κουτί 1, αύριο
+    else { box = oldBox; days = S.settings.intervals[box - 1]; }
+  } else { box = 1; days = 1; }                              // λάθος → κουτί 1, αύριο
+  return { oldBox: oldBox, box: box, days: days };
+}
+function applyGrade(id, g) {
+  const t = today();
+  const o = outcome(id, g);
+  const prev = S.progress[id];
+  const hist = (prev && Array.isArray(prev.hist) ? prev.hist : [])
+    .concat([{ d: t, g: g.charAt(0), b: o.box }]).slice(-HIST_MAX);
+  S.progress[id] = { box: o.box, last: t, next: addDays(t, o.days), hist: hist };
+  if (o.oldBox === 0) {
+    if (S.daily.date !== t) S.daily = { date: t, count: 0 };
+    S.daily.count++;
+    persist(K.daily, S.daily);
+  }
+  saveProgress();
+  return o;
+}
+
+/* ---------- Συνεδρία ---------- */
+function shuffle(a) {
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = r[i]; r[i] = r[j]; r[j] = tmp;
+  }
+  return r;
+}
+function startSession(mode) {
+  const list = filtered();
+  const t = today();
+  let ids;
+  if (mode === 'sched') {
+    const due = list.filter(function (c) { return isDue(c.id, t); });
+    const news = list.filter(function (c) { return boxOf(c.id) === 0; }).slice(0, newQuota());
+    ids = shuffle(due).concat(shuffle(news)).map(function (c) { return c.id; });
+  } else {
+    ids = shuffle(list).map(function (c) { return c.id; });
+  }
+  if (!ids.length) return;
+  S.session = {
+    mode: mode,
+    queue: ids.map(function (id) { return { id: id, repeat: 0 }; }),
+    idx: 0, revealed: false,
+    st: { good: 0, partial: 0, bad: 0, up: 0, down: 0, fresh: 0, firsts: 0 }
+  };
+  go('study');
+}
+function currentItem() {
+  const s = S.session;
+  while (s && s.idx < s.queue.length && !S.byId[s.queue[s.idx].id]) s.idx++;   // κάρτα που αφαιρέθηκε στο μεταξύ
+  return s && s.idx < s.queue.length ? s.queue[s.idx] : null;
+}
+function rate(g) {
+  const s = S.session;
+  const item = currentItem();
+  if (!s || !item || !s.revealed) return;
+  const card = S.byId[item.id];
+  const isB = card.type === 'Β_θέμα';
+  if (!isB && g === 'partial') return;
+  if (item.repeat === 0) {
+    s.st[g]++; s.st.firsts++;
+    if (s.mode === 'sched') {
+      const o = applyGrade(item.id, g);
+      if (o.oldBox === 0) s.st.fresh++;
+      else if (o.box > o.oldBox) s.st.up++;
+      else if (o.box < o.oldBox) s.st.down++;
+    }
+  }
+  if (g === 'bad' && item.repeat < MAX_REPEATS) s.queue.push({ id: item.id, repeat: item.repeat + 1 });
+  s.idx++;
+  s.revealed = false;
+  if (!currentItem()) { finishSession(); return; }
+  render();
+  window.scrollTo(0, 0);
+}
+function finishSession() {
+  const s = S.session;
+  S.summary = { mode: s.mode, st: s.st };
+  S.session = null;
+  go('summary');
+}
+
+/* ---------- Απόδοση κειμένου ---------- */
+const BULLET_RE = /\s*•\s*/;
+const MARK_SPLIT_RE = /(\[\s*\d+(?:[.,]\d+)?\s*μον\.?\s*\])/;
+const MARK_RE = /\[\s*(\d+(?:[.,]\d+)?)\s*μον\.?\s*\]/g;
+const QPTS_RE = /\s*\(\s*(\d+(?:[.,]\d+)?)\s*μονάδ(?:ες|α)\s*\)\s*$/;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function inl(s) {
+  return esc(s)
+    .replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+}
+function segments(text) {
+  const raw = String(text || '').trim();
+  return { segs: raw.split(BULLET_RE).map(function (s) { return s.trim(); }).filter(Boolean), startsWithBullet: raw.charAt(0) === '•' };
+}
+/** Ερώτηση/απάντηση ορισμού: εισαγωγική γραμμή + ξεχωριστή γραμμή για κάθε « • ». */
+function renderPlain(text) {
+  const sp = segments(text);
+  if (!sp.segs.length) return '';
+  return sp.segs.map(function (s, i) {
+    const lead = i === 0 && !sp.startsWithBullet;
+    return lead ? '<p class="line lead">' + inl(s) + '</p>' : '<div class="line item">' + inl(s) + '</div>';
+  }).join('');
+}
+/** Απάντηση Β θέματος: κάθε σημείο σε δική του γραμμή, [Ν μον.] ως σήμα, ό,τι ακολουθεί ως σημείωση. */
+function renderB(text) {
+  return segments(text).segs.map(function (seg) {
+    const parts = seg.split(MARK_SPLIT_RE);
+    let notes = '', badges = '';
+    for (let i = 1; i < parts.length; i += 2) {
+      const n = parts[i].match(/\d+(?:[.,]\d+)?/)[0];
+      badges += '<span class="pts">' + esc(n) + ' μον.</span>';
+      const after = (parts[i + 1] || '').trim();
+      if (after) notes += '<div class="line-note">' + inl(after) + '</div>';
+    }
+    return '<div class="line b-line"><div class="line-main">' + inl(parts[0].trim()) + notes + '</div>' + badges + '</div>';
+  }).join('');
+}
+function splitQPoints(q) {
+  const m = String(q).match(QPTS_RE);
+  return m ? { text: q.slice(0, m.index), pts: m[1] } : { text: q, pts: null };
+}
+function num(s) { return parseFloat(String(s).replace(',', '.')); }
+function sumMarks(a) { let s = 0; String(a).replace(MARK_RE, function (m, n) { s += num(n); return m; }); return s; }
+function cardIssues(c) {
+  const out = [];
+  if (!c.page) out.push('Χωρίς σελίδα βιβλίου.');
+  if (TYPES.indexOf(c.type) < 0) out.push('Άγνωστος τύπος «' + c.type + '».');
+  if (c.type === 'Β_θέμα') {
+    const qp = splitQPoints(c.q).pts;
+    const sum = sumMarks(c.a);
+    if (!qp) out.push('Η ερώτηση δεν δηλώνει σύνολο μονάδων.');
+    else if (Math.abs(num(qp) - sum) > 1e-9) out.push('Άθροισμα [μον.] = ' + sum + ', ενώ η ερώτηση δηλώνει ' + qp + '.');
+    if (!sum) out.push('Η απάντηση δεν έχει ενδείξεις [Ν μον.].');
+  }
+  return out;
+}
+function safeImg(u) {
+  u = String(u || '').trim();
+  if (!u) return '';
+  if (/^https?:\/\//i.test(u) || !/^[a-z][a-z0-9+.-]*:/i.test(u)) return u;
+  return '';
+}
+
+/* ---------- iOS: οδηγία αρχικής οθόνης ---------- */
+function isIOS() {
+  const ua = navigator.userAgent || '';
+  return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+function isStandalone() {
+  return window.navigator.standalone === true ||
+    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+}
+function showA2HS() {
+  if (!isIOS() || isStandalone()) return false;
+  if (S.a2hsForce) return true;
+  return !S.a2hsHidden && !Store.get(K.a2hs);
+}
+const SHARE_ICON = '<svg class="share-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg>';
+
+/* ---------- Πλοήγηση / απόδοση ---------- */
+function go(view) {
+  if (view === 'settings' && S.view !== 'settings') S.prevView = (S.view === 'study' || S.view === 'summary') ? 'home' : S.view;
+  S.view = view;
+  S.flash = null;
+  render();
+  window.scrollTo(0, 0);
+}
+function render() {
+  document.body.classList.toggle('in-study', S.view === 'study');
+  document.getElementById('draftBadge').hidden = !DRAFT;
+  const v = document.getElementById('view');
+  const fn = VIEWS[S.view] || VIEWS.home;
+  v.innerHTML = fn();
+}
+
+function bannersHtml() {
+  let h = '';
+  if (showA2HS()) {
+    h += '<div class="notice info" role="note">' +
+      '<strong>Προσθέστε το στην αρχική οθόνη</strong>' +
+      '<div class="small muted" style="margin-top:4px">Στο Safari, η πρόοδος σβήνεται αν δεν ανοίξετε τη σελίδα για 7 ημέρες. Ως εφαρμογή αρχικής οθόνης δεν σβήνεται.</div>' +
+      '<ol class="small">' +
+        '<li>Πατήστε το κουμπί Κοινοποίησης ' + SHARE_ICON + ' (iPhone: κάτω· iPad: πάνω δεξιά).</li>' +
+        '<li>Επιλέξτε «Προσθήκη στην οθόνη Αφετηρίας» (κυλήστε προς τα κάτω αν δεν φαίνεται).</li>' +
+        '<li>Πατήστε «Προσθήκη» και ανοίγετε το εργαλείο πάντα από το εικονίδιο.</li>' +
+      '</ol>' +
+      '<div class="small muted">Η εφαρμογή αρχικής οθόνης έχει δική της αποθήκευση. Αν έχετε ήδη πρόοδο εδώ, κάντε πρώτα <strong>Εξαγωγή προόδου</strong> από τις Ρυθμίσεις και μετά <strong>Εισαγωγή</strong> μέσα στην εφαρμογή.</div>' +
+      '<div class="btn-row"><button class="btn ghost" data-action="a2hs-later">Αργότερα</button>' +
+      '<button class="btn" data-action="a2hs-never">Να μην ξαναεμφανιστεί</button></div>' +
+      '</div>';
+  }
+  if (!Store.ok) {
+    h += '<div class="notice warn"><strong>Η αποθήκευση δεν είναι διαθέσιμη</strong> (π.χ. Ιδιωτική περιήγηση). Μπορείτε να μελετήσετε κανονικά, αλλά η πρόοδος θα χαθεί όταν κλείσει η σελίδα.</div>';
+  } else if (S.saveFailed) {
+    h += '<div class="notice warn"><strong>Αποτυχία αποθήκευσης.</strong> Η πρόοδος κρατιέται προσωρινά. Κάντε Εξαγωγή προόδου από τις Ρυθμίσεις για ασφάλεια.</div>';
+  }
+  if (S.offline) {
+    h += '<div class="notice warn"><strong>Εκτός σύνδεσης:</strong> εμφανίζονται οι κάρτες της τελευταίας φόρτωσης. <span class="muted small">(' + esc(S.offlineMsg) + ')</span>' +
+      '<div class="btn-row"><button class="btn" data-action="reload">Δοκιμή ξανά</button></div></div>';
+  }
+  if (DRAFT) {
+    const issues = [];
+    S.warnings.forEach(function (w) { issues.push(w); });
+    S.cards.forEach(function (c) { cardIssues(c).forEach(function (w) { issues.push(c.id + ': ' + w); }); });
+    h += '<div class="notice error"><strong>Λειτουργία ελέγχου πρόχειρων.</strong> Περιλαμβάνονται κάρτες σε κατάσταση «πρόχειρο». Η πρόοδος εδώ αποθηκεύεται χωριστά από την κανονική.' +
+      (issues.length
+        ? '<details class="warnings" style="margin-top:8px"><summary>Προειδοποιήσεις ελέγχου (' + issues.length + ')</summary><ul>' +
+            issues.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></details>'
+        : '<div class="small" style="margin-top:6px;color:var(--green2)">Καμία προειδοποίηση ελέγχου.</div>') +
+      '</div>';
+  }
+  return h;
+}
+
+const VIEWS = {
+  loading: function () {
+    return '<main><div class="loading"><div class="spinner"></div><div>Φόρτωση καρτών…</div></div></main>';
+  },
+
+  error: function () {
+    return '<main>' + bannersHtml() +
+      '<div class="notice error"><strong>Δεν ήταν δυνατή η φόρτωση των καρτών.</strong><div style="margin-top:6px">' + esc(S.loadError) + '</div>' +
+      '<div class="btn-row"><button class="btn" data-action="reload">Δοκιμή ξανά</button></div></div></main>';
+  },
+
+  home: function () {
+    let h = '<main>' + bannersHtml();
+
+    if (!S.cards.length) {
+      h += '<div class="card center"><div style="font-weight:700;margin-bottom:6px">Δεν υπάρχουν ακόμη εγκεκριμένες κάρτες.</div>' +
+        '<div class="muted small">Οι κάρτες θα εμφανιστούν εδώ μόλις εγκριθούν.</div></div>';
+      return h + footHtml() + '</main>';
+    }
+
+    const list = filtered();
+    const st = stats(list);
+    const newToday = Math.min(st.nw, newQuota());
+    const totalToday = st.due + newToday;
+
+    // Σήμερα
+    h += '<section class="card"><h2>Σήμερα</h2>' +
+      '<div class="today">' +
+        '<div class="stat due"><div class="n">' + st.due + '</div><div class="l">για επανάληψη</div></div>' +
+        '<div class="stat new"><div class="n">' + newToday + '</div><div class="l">νέες' +
+          (st.nw > newToday ? ' <span class="small">(από ' + st.nw + ')</span>' : '') + '</div></div>' +
+      '</div>';
+    if (!totalToday) {
+      h += '<div class="done-msg">Ολοκληρώσατε την επανάληψη για σήμερα.</div>';
+      if (st.nextDate) h += '<div class="center muted small" style="margin:-6px 0 12px">Επόμενη: ' + fmtDate(st.nextDate) + ' (' + st.nextCount + (st.nextCount === 1 ? ' κάρτα' : ' κάρτες') + ')</div>';
+      if (st.nw && !newQuota()) h += '<div class="center muted small" style="margin:-6px 0 12px">Συμπληρώθηκε το όριο νέων καρτών για σήμερα (' + S.settings.newPerDay + ').</div>';
+    }
+    h += '<div class="btn-row">' +
+        '<button class="btn primary" data-action="start-sched"' + (totalToday ? '' : ' disabled') + '>Ξεκίνα' + (totalToday ? ' (' + totalToday + ')' : '') + '</button>' +
+        '<button class="btn" data-action="start-free"' + (list.length ? '' : ' disabled') + '>Ελεύθερη εξάσκηση</button>' +
+      '</div></section>';
+
+    // Κουτιά Leitner
+    const labels = ['Νέες', 'Κ1', 'Κ2', 'Κ3', 'Κ4', 'Κ5'];
+    h += '<section class="card"><h2>Κουτιά Leitner · ' + st.total + (st.total === 1 ? ' κάρτα' : ' κάρτες') + '</h2><div class="lbar" aria-hidden="true">';
+    st.boxes.forEach(function (n, i) {
+      if (n) h += '<i class="c' + i + '" style="width:' + (100 * n / Math.max(1, st.total)).toFixed(2) + '%"></i>';
+    });
+    h += '</div><div class="lgrid">';
+    st.boxes.forEach(function (n, i) {
+      h += '<div class="lcell c' + i + 'b"><div class="n">' + n + '</div><div class="l">' + labels[i] +
+        (i ? '<br>' + S.settings.intervals[i - 1] + ' ημ.' : '<br>&nbsp;') + '</div></div>';
+    });
+    h += '</div></section>';
+
+    // Φίλτρα
+    const anySel = DIMS.some(function (d) { return S.ui.filters[d].length; });
+    h += '<section class="card"><h2>Φίλτρα</h2>';
+    DIMS.forEach(function (d) {
+      h += '<div class="fgroup"><div class="ft"><span>' + DIM_LABEL[d] + '</span>' +
+        (S.ui.filters[d].length ? '' : '<span class="small">όλα</span>') + '</div><div class="chips">';
+      valuesOf(d).forEach(function (v) {
+        const n = facetCount(d, v);
+        const on = S.ui.filters[d].indexOf(v) >= 0;
+        const lbl = d === 'type' ? TYPE_LABEL[v] : d === 'grade' ? gradeLabel(v) : v;
+        h += '<button class="chip" data-action="chip" data-dim="' + d + '" data-val="' + esc(v) + '" aria-pressed="' + on + '"' +
+          (!n && !on ? ' disabled' : '') + '>' + esc(lbl) + '<span class="cnt">' + n + '</span></button>';
+      });
+      h += '</div></div>';
+    });
+    if (anySel) h += '<button class="link-btn" data-action="clear-filters">Καθαρισμός φίλτρων</button>';
+    h += '</section>';
+
+    return h + footHtml() + '</main>';
+  },
+
+  study: function () {
+    const s = S.session;
+    const item = currentItem();
+    if (!s || !item) return VIEWS.home();
+    const c = S.byId[item.id];
+    const isB = c.type === 'Β_θέμα';
+    const total = s.queue.length;
+    const pos = s.idx + 1;
+    const box = boxOf(c.id);
+    const qp = isB ? splitQPoints(c.q) : { text: c.q, pts: null };
+    const img = safeImg(c.img);
+
+    let h = '<div class="study-top">' +
+      '<button class="icon-btn" data-action="exit" aria-label="Έξοδος"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
+      '<div class="prog"><div class="prog-text"><span>' + pos + ' / ' + total + '</span><span>' +
+        (s.mode === 'sched' ? 'Επανάληψη' : 'Ελεύθερη εξάσκηση') + '</span></div>' +
+        '<div class="pbar"><i style="width:' + (100 * (pos - 1) / total).toFixed(1) + '%"></i></div></div>' +
+      '</div>';
+
+    h += '<div class="study-body">' +
+      '<div class="meta-chips">' +
+        '<span class="badge">' + esc(c.chapter) + '</span>' +
+        '<span class="badge ' + (TYPE_COLOR[c.type] || '') + '">' + esc(TYPE_SINGLE[c.type] || c.type) + '</span>' +
+        '<span class="badge">' + (box ? 'Κουτί ' + box : 'Νέα') + '</span>' +
+        (item.repeat ? '<span class="badge rose">Ξανά</span>' : '') +
+        (DRAFT && c.status === 'πρόχειρο' ? '<span class="badge rose">πρόχειρο</span>' : '') +
+      '</div>' +
+      (c.section ? '<div class="section-name">' + esc(c.section) + '</div>' : '');
+
+    h += '<article class="fc"><div class="fc-q">' +
+      '<div class="qhead"><span class="qlabel">Ερώτηση</span>' + (qp.pts ? '<span class="pts">' + esc(qp.pts) + ' μον.</span>' : '') + '</div>' +
+      '<div class="qtext">' + renderPlain(qp.text) + '</div>' +
+      (img ? '<img class="fc-img" src="' + esc(img) + '" alt="Εικόνα κάρτας" loading="lazy" onerror="this.hidden=true">' : '') +
+      '</div>';
+    if (s.revealed) {
+      h += '<div class="fc-a" id="answer"><div class="ahead"><span class="qlabel" style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)">' +
+        (isB ? 'Υποδειγματική απάντηση' : 'Απάντηση') + '</span>' +
+        (c.page ? '<span class="badge blue">σελ. ' + esc(c.page) + '</span>' : '') + '</div>' +
+        '<div class="atext">' + (isB ? renderB(c.a) : renderPlain(c.a)) + '</div></div>';
+    }
+    h += '</article>';
+
+    if (DRAFT) {
+      const issues = cardIssues(c);
+      h += '<div class="draft-meta"><div><code>' + esc(c.id) + '</code> · ' + esc(c.status) + ' · πηγή: ' + esc(c.source || '—') + '</div>' +
+        (c.tags.length ? '<div>ετικέτες: ' + esc(c.tags.join(', ')) + '</div>' : '') +
+        issues.map(function (w) { return '<div class="w">⚠ ' + esc(w) + '</div>'; }).join('') + '</div>';
+    }
+    h += '</div>';
+
+    // Γραμμή ενεργειών
+    h += '<div class="actionbar"><div class="inner">';
+    if (!s.revealed) {
+      h += '<button class="btn primary block" style="min-height:58px;font-size:16px" data-action="reveal">Δείξε απάντηση</button>';
+    } else {
+      const sched = s.mode === 'sched' && item.repeat === 0;
+      const hint = function (g) {
+        if (!sched) return '';
+        const o = outcome(c.id, g);
+        return '<small>Κ' + o.box + ' · ' + daysWord(o.days) + '</small>';
+      };
+      if (isB) {
+        h += '<button class="rate bad" data-action="rate" data-g="bad">Λάθος' + hint('bad') + '</button>' +
+             '<button class="rate partial" data-action="rate" data-g="partial">Μερικώς' + hint('partial') + '</button>' +
+             '<button class="rate good" data-action="rate" data-g="good">Σωστό' + hint('good') + '</button>';
+      } else {
+        h += '<button class="rate bad" data-action="rate" data-g="bad">Δεν το ήξερα' + hint('bad') + '</button>' +
+             '<button class="rate good" data-action="rate" data-g="good">Το ήξερα' + hint('good') + '</button>';
+      }
+    }
+    h += '</div><div class="kbd-hint">' + (s.revealed ? (isB ? '1 Λάθος · 2 Μερικώς · 3 Σωστό' : '1 Δεν το ήξερα · 2 Το ήξερα') : 'Space ή → για την απάντηση') + ' · Esc έξοδος</div></div>';
+    return h;
+  },
+
+  summary: function () {
+    const sm = S.summary || { mode: 'sched', st: { good: 0, partial: 0, bad: 0, up: 0, down: 0, fresh: 0, firsts: 0 } };
+    const st = stats(filtered());
+    let h = '<main>' + bannersHtml() + '<section class="card"><h2>Τέλος συνεδρίας</h2>' +
+      '<div class="center" style="font-size:20px;font-weight:700;margin-bottom:14px">' + sm.st.firsts + (sm.st.firsts === 1 ? ' κάρτα' : ' κάρτες') + '</div>' +
+      '<div class="sum-grid">' +
+        '<div class="stat good"><div class="n">' + sm.st.good + '</div><div class="l">σωστά</div></div>' +
+        '<div class="stat partial"><div class="n">' + sm.st.partial + '</div><div class="l">μερικώς</div></div>' +
+        '<div class="stat bad"><div class="n">' + sm.st.bad + '</div><div class="l">λάθος</div></div>' +
+      '</div>';
+    if (sm.mode === 'sched') {
+      h += '<div class="center muted">Νέες κάρτες: <strong>' + sm.st.fresh + '</strong> · Ανέβηκαν κουτί: <strong style="color:var(--green2)">' + sm.st.up + '</strong> · Επέστρεψαν στο Κ1: <strong style="color:var(--rose2)">' + sm.st.down + '</strong></div>';
+      const remaining = st.due + Math.min(st.nw, newQuota());
+      if (remaining) h += '<div class="center small muted" style="margin-top:8px">Απομένουν ' + remaining + ' κάρτες για σήμερα.</div>';
+      else if (st.nextDate) h += '<div class="center small muted" style="margin-top:8px">Επόμενη επανάληψη: ' + fmtDate(st.nextDate) + ' (' + st.nextCount + (st.nextCount === 1 ? ' κάρτα' : ' κάρτες') + ')</div>';
+    } else {
+      h += '<div class="center small muted">Η ελεύθερη εξάσκηση δεν αλλάζει τα κουτιά Leitner.</div>';
+    }
+    h += '<div class="btn-row" style="margin-top:16px">' +
+      (sm.mode === 'sched' && (st.due + Math.min(st.nw, newQuota())) ? '<button class="btn primary" data-action="start-sched">Συνέχεια</button>' : '') +
+      (sm.mode === 'free' ? '<button class="btn primary" data-action="start-free">Ξανά</button>' : '') +
+      '<button class="btn" data-action="home">Αρχική</button></div></section>' + footHtml() + '</main>';
+    return h;
+  },
+
+  settings: function () {
+    const f = S.flash || {};
+    const msg = function (target) {
+      return f.target === target ? '<div class="msg ' + (f.kind === 'ok' ? 'ok' : 'err') + '">' + esc(f.text) + '</div>' : '';
+    };
+    const nProg = Object.keys(S.progress).length;
+    const nKnown = Object.keys(S.progress).filter(function (id) { return S.byId[id]; }).length;
+
+    let h = '<main>' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">' +
+        '<button class="icon-btn" data-action="back" aria-label="Πίσω"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>' +
+        '<div style="font-weight:700;font-size:18px">Ρυθμίσεις</div></div>';
+
+    // Διαστήματα
+    h += '<section class="card"><h2>Διαστήματα κουτιών (ημέρες)</h2><div class="field-row">';
+    S.settings.intervals.forEach(function (n, i) {
+      h += '<div class="field"><label for="iv' + i + '">Κ' + (i + 1) + '</label><input id="iv' + i + '" type="number" inputmode="numeric" min="1" max="365" step="1" value="' + n + '"></div>';
+    });
+    h += '</div><div class="field wide" style="margin-top:14px"><label for="npd" style="text-align:left">Νέες κάρτες ανά ημέρα</label>' +
+      '<input id="npd" type="number" inputmode="numeric" min="0" max="500" step="1" value="' + S.settings.newPerDay + '"></div>' +
+      '<div class="small muted" style="margin-top:10px">«Λάθος» → Κ1 με επανάληψη αύριο. «Μερικώς» → μένει στο κουτί (νέα κάρτα → Κ1, αύριο).</div>' +
+      '<div class="btn-row" style="margin-top:12px"><button class="btn primary" data-action="save-settings">Αποθήκευση</button>' +
+      '<button class="btn ghost" data-action="default-settings">Προεπιλογές</button></div>' + msg('settings') + '</section>';
+
+    // Εξαγωγή
+    h += '<section class="card"><h2>Εξαγωγή προόδου</h2>' +
+      '<div class="small muted" style="margin-bottom:10px">Δημιουργεί κωδικό κειμένου με όλη την πρόοδο (' + nProg + (nProg === 1 ? ' κάρτα' : ' κάρτες') + '). Αποθηκεύστε τον, π.χ. σε σημειώσεις, για μεταφορά σε άλλη συσκευή ή στην εφαρμογή αρχικής οθόνης.</div>' +
+      '<button class="btn" data-action="export">Δημιουργία κωδικού</button>';
+    if (S.exportCode) {
+      h += '<textarea id="exportBox" readonly style="margin-top:12px" aria-label="Κωδικός προόδου">' + esc(S.exportCode) + '</textarea>' +
+        '<div class="btn-row" style="margin-top:10px"><button class="btn primary" data-action="copy-export">Αντιγραφή</button></div>';
+    }
+    h += msg('export') + '</section>';
+
+    // Εισαγωγή
+    h += '<section class="card"><h2>Εισαγωγή προόδου</h2>' +
+      '<div class="small muted" style="margin-bottom:10px">Επικολλήστε κωδικό που ξεκινά με «BIOFLASH1:». Η τρέχουσα πρόοδος θα αντικατασταθεί.</div>' +
+      '<textarea id="importBox" placeholder="BIOFLASH1:…" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Κωδικός για εισαγωγή"></textarea>' +
+      '<div class="btn-row" style="margin-top:10px"><button class="btn primary" data-action="do-import">Εισαγωγή</button></div>' + msg('import') + '</section>';
+
+    // Πληροφορίες
+    h += '<section class="card"><h2>Πληροφορίες</h2><dl class="kv">' +
+      '<dt>Δημιουργός</dt><dd>Δρ. Δημοσθένης Καρυοφύλλης<br><a href="https://karyophyllis.com" target="_blank" rel="noopener" style="color:var(--cyan2)">karyophyllis.com</a></dd>' +
+      '<dt>Έκδοση</dt><dd>flashcards v' + APP_VERSION + (DRAFT ? ' · πρόχειρα' : '') + '</dd>' +
+      '<dt>Κάρτες</dt><dd>' + S.cards.length + '</dd>' +
+      '<dt>Πρόοδος</dt><dd>' + nProg + ' κάρτες' + (nProg !== nKnown ? ' (' + (nProg - nKnown) + ' δεν υπάρχουν πια στο σύνολο)' : '') + '</dd>' +
+      '<dt>Αποθήκευση</dt><dd>' + (Store.ok ? (S.saveFailed ? 'σφάλμα εγγραφής' : 'τοπικά στη συσκευή') : 'μη διαθέσιμη') + '</dd>' +
+      '<dt>Εφαρμογή</dt><dd>' + (isStandalone() ? 'αρχικής οθόνης' : 'φυλλομετρητής') + '</dd>' +
+      (S.meta && S.meta.generated ? '<dt>Ενημέρωση</dt><dd>' + esc(new Date(S.meta.generated).toLocaleString('el-GR')) + '</dd>' : '') +
+      '</dl>' +
+      (isIOS() && !isStandalone() ? '<button class="link-btn" style="margin-top:8px" data-action="a2hs-show">Οδηγίες προσθήκης στην αρχική οθόνη</button>' : '') +
+      '</section>';
+
+    // Επαναφορά
+    h += '<section class="card"><h2>Επαναφορά</h2>' +
+      '<div class="small muted" style="margin-bottom:10px">Διαγράφει όλη την πρόοδο σε αυτή τη συσκευή. Δεν αναιρείται.</div>' +
+      '<button class="btn danger" data-action="reset">Διαγραφή προόδου</button>' + msg('reset') + '</section>';
+
+    return h + footHtml() + '</main>';
+  }
+};
+
+function footHtml() {
+  return '<div class="foot">' +
+    '<div class="author">Δρ. Δημοσθένης Καρυοφύλλης · Βιολόγος · <a href="https://karyophyllis.com" target="_blank" rel="noopener">karyophyllis.com</a></div>' +
+    '<div>flashcards v' + APP_VERSION + (DRAFT ? ' · πρόχειρα' : '') + ' · ' + S.cards.length + ' κάρτες</div></div>';
+}
+
+/* ---------- Εξαγωγή / εισαγωγή ---------- */
+function b64enc(s) {
+  const bytes = new TextEncoder().encode(s);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function b64dec(b) {
+  const bin = atob(b);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+}
+function makeExport() {
+  return EXPORT_PREFIX + b64enc(JSON.stringify({
+    v: 1, app: 'bio-flashcards', mode: MODE, draft: DRAFT,
+    exported: new Date().toISOString(),
+    settings: S.settings, daily: S.daily, progress: S.progress
+  }));
+}
+function parseImport(raw) {
+  const s = String(raw || '').replace(/\s+/g, '');
+  if (!s) throw new Error('Επικολλήστε πρώτα τον κωδικό.');
+  if (s.indexOf(EXPORT_PREFIX) !== 0) throw new Error('Ο κωδικός πρέπει να ξεκινά με «' + EXPORT_PREFIX + '».');
+  let obj;
+  try { obj = JSON.parse(b64dec(s.slice(EXPORT_PREFIX.length))); }
+  catch (e) { throw new Error('Ο κωδικός είναι κατεστραμμένος ή ελλιπής. Ελέγξτε ότι αντιγράφηκε ολόκληρος.'); }
+  if (!obj || obj.v !== 1 || obj.app !== 'bio-flashcards' || !obj.progress || typeof obj.progress !== 'object' || Array.isArray(obj.progress)) {
+    throw new Error('Ο κωδικός δεν είναι κωδικός προόδου του BIO Flashcards.');
+  }
+  const cp = cleanProgress(obj.progress);
+  if (!cp.ok && cp.bad) throw new Error('Καμία έγκυρη εγγραφή προόδου στον κωδικό.');
+  return { progress: cp.progress, ok: cp.ok, bad: cp.bad, settings: cleanSettings(obj.settings), daily: cleanDaily(obj.daily), draft: !!obj.draft, exported: obj.exported };
+}
+async function copyText(t, ta) {
+  try { await navigator.clipboard.writeText(t); return true; }
+  catch (e) {
+    try {
+      ta.removeAttribute('readonly');
+      ta.focus(); ta.select(); ta.setSelectionRange(0, t.length);
+      const ok = document.execCommand('copy');
+      ta.setAttribute('readonly', '');
+      return ok;
+    } catch (e2) { return false; }
+  }
+}
+
+/* ---------- Ενέργειες ---------- */
+function flash(target, text, kind) { S.flash = { target: target, text: text, kind: kind }; render(); }
+
+const ACTIONS = {
+  'settings': function () { go('settings'); },
+  'back': function () { go(S.prevView || 'home'); },
+  'home': function () { go('home'); },
+  'reload': function () { location.reload(); },
+  'start-sched': function () { startSession('sched'); },
+  'start-free': function () { startSession('free'); },
+  'reveal': function () {
+    if (!S.session || S.session.revealed) return;
+    S.session.revealed = true;
+    render();
+    const a = document.getElementById('answer');
+    if (a && a.scrollIntoView) a.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  },
+  'rate': function (el) { rate(el.getAttribute('data-g')); },
+  'exit': function () {
+    if (S.session && S.session.st.firsts) finishSession();
+    else { S.session = null; go('home'); }
+  },
+  'chip': function (el) {
+    const d = el.getAttribute('data-dim'), v = el.getAttribute('data-val');
+    const sel = S.ui.filters[d];
+    const i = sel.indexOf(v);
+    if (i >= 0) sel.splice(i, 1); else sel.push(v);
+    saveUi();
+    render();
+  },
+  'clear-filters': function () { DIMS.forEach(function (d) { S.ui.filters[d] = []; }); saveUi(); render(); },
+  'a2hs-later': function () { S.a2hsHidden = true; S.a2hsForce = false; render(); },
+  'a2hs-never': function () { persist(K.a2hs, true); S.a2hsHidden = true; S.a2hsForce = false; render(); },
+  'a2hs-show': function () { S.a2hsForce = true; S.a2hsHidden = false; go('home'); },
+  'save-settings': function () {
+    const iv = [0, 1, 2, 3, 4].map(function (i) { return Number(document.getElementById('iv' + i).value); });
+    const npd = Number(document.getElementById('npd').value);
+    if (!iv.every(function (n) { return Number.isInteger(n) && n >= 1 && n <= 365; })) {
+      return flash('settings', 'Τα διαστήματα πρέπει να είναι ακέραιοι από 1 έως 365.', 'err');
+    }
+    if (!Number.isInteger(npd) || npd < 0 || npd > 500) {
+      return flash('settings', 'Οι νέες κάρτες ανά ημέρα πρέπει να είναι ακέραιος από 0 έως 500.', 'err');
+    }
+    S.settings = { intervals: iv, newPerDay: npd };
+    persist(K.settings, S.settings);
+    flash('settings', 'Αποθηκεύτηκε. Τα νέα διαστήματα ισχύουν από την επόμενη αξιολόγηση κάθε κάρτας.', 'ok');
+  },
+  'default-settings': function () {
+    S.settings = clone(DEFAULT_SETTINGS);
+    persist(K.settings, S.settings);
+    flash('settings', 'Επαναφέρθηκαν οι προεπιλογές (1-2-4-8-16, 20 νέες/ημέρα).', 'ok');
+  },
+  'export': function () {
+    S.exportCode = makeExport();
+    flash('export', 'Ο κωδικός δημιουργήθηκε. Αντιγράψτε τον και φυλάξτε τον.', 'ok');
+  },
+  'copy-export': async function () {
+    const ta = document.getElementById('exportBox');
+    const ok = await copyText(S.exportCode, ta);
+    flash('export', ok ? 'Αντιγράφηκε στο πρόχειρο.' : 'Η αυτόματη αντιγραφή απέτυχε. Πατήστε παρατεταμένα στο πλαίσιο και επιλέξτε «Αντιγραφή».', ok ? 'ok' : 'err');
+  },
+  'do-import': function () {
+    const raw = document.getElementById('importBox').value;
+    let res;
+    try { res = parseImport(raw); }
+    catch (e) { return flash('import', e.message, 'err'); }
+    const known = Object.keys(res.progress).filter(function (id) { return S.byId[id]; }).length;
+    let q = 'Θα αντικατασταθεί η τρέχουσα πρόοδος (' + Object.keys(S.progress).length + ' κάρτες) με την εισαγόμενη (' + res.ok + ' κάρτες).';
+    if (res.draft !== DRAFT) q += '\n\nΠροσοχή: ο κωδικός προέρχεται από ' + (res.draft ? 'λειτουργία πρόχειρων' : 'την κανονική λειτουργία') + '.';
+    q += '\n\nΣυνέχεια;';
+    if (!window.confirm(q)) return;
+    S.progress = res.progress;
+    S.settings = res.settings;
+    S.daily = res.daily;
+    saveProgress();
+    persist(K.settings, S.settings);
+    persist(K.daily, S.daily);
+    let m = 'Εισήχθη πρόοδος για ' + res.ok + ' κάρτες';
+    if (res.ok !== known) m += ' (' + (res.ok - known) + ' δεν υπάρχουν στο τρέχον σύνολο και αγνοούνται)';
+    m += '.';
+    if (res.bad) m += ' Παραλείφθηκαν ' + res.bad + ' μη έγκυρες εγγραφές.';
+    flash('import', m, 'ok');
+  },
+  'reset': function () {
+    if (!window.confirm('Να διαγραφεί όλη η πρόοδος σε αυτή τη συσκευή; Δεν αναιρείται.')) return;
+    S.progress = {};
+    S.daily = { date: '', count: 0 };
+    saveProgress();
+    persist(K.daily, S.daily);
+    S.exportCode = '';
+    flash('reset', 'Η πρόοδος διαγράφηκε.', 'ok');
+  }
+};
+
+document.addEventListener('click', function (ev) {
+  const el = ev.target.closest('[data-action]');
+  if (!el || el.disabled) return;
+  const fn = ACTIONS[el.getAttribute('data-action')];
+  if (fn) { ev.preventDefault(); fn(el); }
+});
+
+document.addEventListener('keydown', function (ev) {
+  if (S.view !== 'study' || !S.session) return;
+  const tag = (ev.target && ev.target.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+  const item = currentItem();
+  if (!item) return;
+  const isB = S.byId[item.id].type === 'Β_θέμα';
+  const k = ev.key;
+  if (k === 'Escape') { ev.preventDefault(); ACTIONS.exit(); return; }
+  if (!S.session.revealed) {
+    if (k === ' ' || k === 'Enter' || k === 'ArrowRight') { ev.preventDefault(); ACTIONS.reveal(); }
+    return;
+  }
+  if (k === '1') { ev.preventDefault(); rate('bad'); }
+  else if (k === '2') { ev.preventDefault(); rate(isB ? 'partial' : 'good'); }
+  else if (k === '3' && isB) { ev.preventDefault(); rate('good'); }
+});
+
+/* ---------- Εκκίνηση ---------- */
+async function init() {
+  loadLocal();
+  const cached = Store.get(K.cards);
+  const hasCache = !!(cached && Array.isArray(cached.cards));
+  if (hasCache) { setCards(cached); S.view = 'home'; }
+  render();
+
+  try {
+    const data = await fetchCards();
+    persist(K.cards, data);
+    setCards(data);
+    S.offline = false;
+    S.loadError = '';
+  } catch (err) {
+    const msg = (err && err.message) || 'Άγνωστο σφάλμα';
+    if (hasCache) { S.offline = true; S.offlineMsg = msg; }
+    else S.loadError = msg;
+  }
+  if (S.view === 'loading') S.view = S.loadError ? 'error' : 'home';
+  if (S.view !== 'study') render();   // μη διακοπή συνεδρίας που ήδη τρέχει
+}
+init();
+</script>
+</body>
+</html>
